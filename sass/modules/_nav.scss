@@ -4,6 +4,11 @@ nav {
     .nav-item { 
         display: inline-block; margin: 0 10px;
 
+        background-color: blue;
+
+        @include roundCorners(8px);
+        @include addPadding(0 5px 8px 0);
+
         a { cursor: pointer; text-decoration: none; }
     }
 
