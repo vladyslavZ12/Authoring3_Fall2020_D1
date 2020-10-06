@@ -17,9 +17,10 @@ import Team from "./modules/DataModule.js";
             let currentUser = userTemplate.cloneNode(true),
                 currentUserText = currentUser.querySelector('.user').children;
 
-            currentUserText[1].textContent = data[user].name;
-            currentUserText[2].textContent = data[user].role;
-            currentUserText[3].textContent = data[user].nickname;
+            currentUserText[1].src = `images/${data[user].biopic}`;
+            currentUserText[2].textContent = data[user].name;
+            currentUserText[3].textContent = data[user].role;
+            currentUserText[4].textContent = data[user].nickname;
 
             // add this new user to the view
             userSection.appendChild(currentUser);
@@ -29,16 +30,12 @@ import Team from "./modules/DataModule.js";
     // async is now THE WAY to do AJAX / asynchronous operations
     async function fetchData() {
         // ask for a resource, and then do something with it when it resolves
-        let resource = await fetch('../DataSt.json').then(response => {
+        let resource = await fetch('../DataSet.json').then(response => {
             if (response.status !== 200) {
-                console.error('server done broke!' + response.status);
-                popErrorBox(response);
-
-                return false;
-                // response = JSON.stringify({message: 'some stupid server error'});
-            }
-
-            return response;
+                throw new Error(`Danger Will Robinson! Here there be monsters! Error ${response.status}`);
+            } 
+            
+            return response;           
         });
 
         // fetch uses the Promise API, so it'll return with the resource or return false - either way, it resolves the promise
@@ -49,14 +46,11 @@ import Team from "./modules/DataModule.js";
         return dataset;            
     }
 
-    fetchData().then(data => handleDataSet(data));
+    // we can add a catch handler to a thenable if things go wrong during our data retrieval attempt
+    // really, we should move all of this to an external class or function and pass arguments into it.
 
-    // fetch is an easier syntax to remember, and is pretty well supported but still considered a "base model" way of doing AJAX
+    // that would make it really flexible and able to handle all kinds of requests and we could pass in a callback depending on what we want to do with our data
 
-    // fetch('../DataSet.json')
-    //     .then(res => res.json())
-    //     .then(data => console.log(data))
-    //     .catch((err) => {
-    //         console.error(err)
-    //     });
+    // but then we'd be on our way to rewriting the Axios API (you should research it)
+    fetchData().then(data => handleDataSet(data)).catch(err => { console.log(err); popErrorBox(err); });
 })();
