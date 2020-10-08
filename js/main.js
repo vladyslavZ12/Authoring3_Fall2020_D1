@@ -3,14 +3,12 @@ import Team from "./modules/DataModule.js";
 
 (() => {
     // stub * just a place for non-component-specific stuff
-    console.log('loaded');
-
-    console.log(Team);
+    let userSection = document.querySelector(".user-section");
 
     debugger;
 
     // select our user elements and load the content
-    let userSection = document.querySelector(".user-section").children;
+    
 
     userSection[1].textContent = Team["Justin"].name;
     userSection[2].textContent = Team["Justin"].role;
